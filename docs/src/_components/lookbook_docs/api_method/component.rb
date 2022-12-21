@@ -1,28 +1,27 @@
 module LookbookDocs
   class ApiMethod::Component < Base
-    attr_reader :name, :signature_call, :signature_args, :description,
-      :return_types, :id, :scope, :klass
-
-    def initialize(name:, signature_call:, signature_args:, description: nil,
-      return_types: nil, tags: [], scope: "instance", klass: nil, **attrs)
-      @name = name
-      @signature_call = signature_call.strip
-      @signature_args = signature_args.strip
-      @description = description
-      @return_types = return_types
+    def initialize(tags: [], **attrs)
       @tags = tags
-      @id = attrs[:id]
-      @scope = scope
-      @klass = klass
       @attrs = attrs
     end
 
-    def params
-      tags(:param)
+    def example
+      tags(:example).first&.text
     end
 
-    def options
-      tags(:option)
+    def example_lang
+      tags(:example).first&.name.presence || "erb"
+    end
+
+    def params
+      tags(:param).map do |param|
+        param[:opts] = options_for_param(param[:name])
+        param
+      end
+    end
+
+    def options_for_param(param_name)
+      tags(:option).filter { |opt| opt[:pair].to_s == param_name.to_s }
     end
 
     def tags(tag_name = nil)
