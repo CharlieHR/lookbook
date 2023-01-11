@@ -30,12 +30,14 @@ module Lookbook
 
     def tag_parts
       if @tag_parts.nil?
-        options, text = TagOptionsParser.call(@text, {
+        params = {
           file: host_file,
           base_dir: (File.dirname(host_file) if host_file),
           eval_context: host_class_instance,
-          permit_eval: Lookbook.config.preview_params_options_eval
-        })
+          permit_eval: Lookbook.config.preview_params_options_eval,
+          text: @text
+        }
+        options, text = TagOptionsParser.call(**params)
       end
       @tag_parts ||= {options: options, text: text}
     end

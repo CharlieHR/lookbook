@@ -1,7 +1,7 @@
 module Lookbook
   module OutputHelper
     def markdown(text = nil, &block)
-      MarkdownRenderer.call(block ? capture(&block) : text, Lookbook.config.markdown_options)
+      MarkdownRenderer.call(block ? capture(&block) : text, **Lookbook.config.markdown_options)
     end
 
     def highlight(*args, **opts)

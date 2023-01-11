@@ -23,7 +23,7 @@ module Lookbook
         }
       end
 
-      @page.markdown? ? MarkdownRenderer.call(content, Lookbook.config.markdown_options) : content
+      @page.markdown? ? MarkdownRenderer.call(content, **Lookbook.config.markdown_options) : content
     end
   end
 end
